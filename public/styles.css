@@ -4,6 +4,8 @@
   box-sizing: border-box;
 }
 
+
+
 body {
   background-image: url('https://images.unsplash.com/photo-1531970227416-f0cddeb1f748?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470');
   background-repeat: no-repeat;
@@ -205,4 +207,10 @@ body {
   width: 250px;
   border-radius: 7px;
   margin-bottom: 10px;
+}
+
+.map {
+  margin: 50px auto;
+  height: 700px;
+  width: 65vw;
 }

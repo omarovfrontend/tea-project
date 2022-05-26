@@ -1,7 +1,8 @@
 // Добавление поста
-console.log('dsadas');
+console.log('adidas');
 const { addPost } = document.forms;
 const myPosts = document.querySelector('.myPosts');
+const inp = document.querySelector('.location');
 
 function insertPost(post) {
   return `
@@ -19,6 +20,52 @@ function insertPost(post) {
 
 addPost.addEventListener('submit', async (event) => {
   event.preventDefault();
+  const x = inp.value;
+
+  // START MAP
+  ymaps.ready(() => {
+    init(x);
+  });
+  const mp = document.getElementsByClassName('ymaps-2-1-79-map');
+  if (mp.length > 1) mp[0].remove();
+
+  const placemarks = [
+    // {
+    //   coordinates: [23.5974172, 119.8962412],
+    // },
+  ];
+
+  // Получение координат
+  function getCoords(res) {
+    const firstGeoObject = res.geoObjects.get(0);
+    const coords = firstGeoObject.geometry.getCoordinates();
+    placemarks.push(({ coordinates: [coords[0], coords[1]] }));
+  }
+
+  async function init(txt) {
+    // Создание карты
+    const myMap = new ymaps.Map('myMap', {
+      center: [45.366377, 2.397632],
+      zoom: 2,
+    });
+    myMap.controls.remove('geolocationControl');
+    myMap.controls.remove('searchControl');
+    myMap.controls.remove('trafficControl');
+    myMap.controls.remove('typeSelector');
+    myMap.controls.remove('fullscreenControl');
+    myMap.controls.remove('rulerControl');
+
+    const newCoords = await ymaps.geocode(txt, {
+      results: 1,
+    });
+
+    await getCoords(newCoords);
+
+    for (let i = 0; i < placemarks.length; i += 1) {
+      myMap.geoObjects.add(new ymaps.Placemark(placemarks[i].coordinates));
+    }
+  }
+  // END MAP
 
   const {
     postName, location, img, description,
@@ -34,11 +81,13 @@ addPost.addEventListener('submit', async (event) => {
       location: location.value,
       img: img.value,
       description: description.value,
+      // coordinates: getCoords(location.value)
     }),
   });
 
   if (response.ok) {
     const result = await response.json();
+    console.log(result);
     myPosts.insertAdjacentHTML('afterbegin', insertPost(result));
 
     postName.value = '';
