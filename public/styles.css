@@ -1,0 +1,208 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url('https://images.unsplash.com/photo-1531970227416-f0cddeb1f748?crop=entropy&cs=tinysrgb&fm=jpg&ixlib=rb-1.2.1&q=80&raw_url=true&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0 25%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* layout */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  margin-bottom: 40px;
+}
+
+.header_logo {
+  color: #90d4d2;
+  position: relative;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.welcome {
+  border: 1px dotted transparent;
+  background-color: #2b5461;
+  opacity: .7;
+  font-size: 20px;
+  padding: 8px 15px;
+  border-radius: 20px;
+  margin-right: 10px;
+  color: #30ddd7;
+}
+
+.welcome i {
+  font-weight: 600;
+  color: #90d4d2;
+  border-left: 1px solid #ccc;
+  padding-left: 5px;
+}
+
+.header_logo:after {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: -3px;
+  width: 0;
+  height: 3px;
+  background-color: #0d86ae;
+  transition: width 0.5s;
+}
+
+.header_logo:hover::after {
+  content: "";
+  width: 100%;
+  display: block;
+  position: absolute;
+  color: #333;
+  left: 0;
+  bottom: -3px;
+  height: 3px;
+  background-color: #30ddd7;
+  transition: width 0.5s;
+}
+
+.home_btn,
+.logout_btn,
+.signup_btn,
+.signin_btn,
+.delete-btn {
+  display: inline-block;
+  text-decoration: none;
+  border: 1px solid transparent;
+  color: #ccc;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: all .3s ease-in-out;
+}
+
+.home_btn:hover,
+.logout_btn:hover,
+.signup_btn:hover,
+.signin_btn:hover {
+  border: 1px solid #56b5b1;
+  color: #68d1cb;
+}
+
+/* main */
+.wrapper_form {
+  margin: 20px;
+  text-align: center;
+}
+
+.addPost {
+  margin-bottom: 30px;
+}
+
+.addPost_card,
+.signup_card,
+.signin_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.form-label {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-family: 'Courier New', Courier, monospace;
+  color: #ccc;
+  text-transform: uppercase;
+}
+
+.signup_card input,
+.signin_card input {
+  margin-bottom: 20px;
+}
+
+.input {
+  border-radius: 7px;
+  border: 1px solid transparent;
+  width: 300px;
+  font-size: 18px;
+  padding: 10px 15px;
+  color: #000;
+  font-style: italic;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #e8f0fe;
+  transition: .20s ease-in-out;
+}
+
+.input:focus-within {
+  /* width: 330px; */
+}
+
+.input:focus {
+  outline: none;
+  border-color: #8d8d8d;
+}
+
+.addPost_button,
+.signup_button,
+.signin_button,
+.myPosts_delete-btn {
+  cursor: pointer;
+  padding: 7px;
+  background-color: #e8f0fe;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  width: 200px;
+  height: 40px;
+  font-size: 16px;
+  color: #666;
+  transition: all .3s ease-in-out;
+}
+
+.addPost_button:hover,
+.signup_button:hover,
+.signin_button:hover,
+.myPosts_delete-btn:hover {
+  background-color: #60e6e6bd;
+  border: 1px solid #000;
+}
+
+.myPosts_delete-btn:hover {
+  background-color: #ea6d6d;
+  color: #fff;
+}
+
+/* main */
+.myPosts {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  list-style: none;
+  margin-bottom: 30px;
+}
+.myPost {
+  width: 22%;
+  text-align: center;
+  margin-bottom: 50px;
+  margin-right: 25px;
+}
+
+.myPost p {
+  color: #ccc;
+  font-size: 20px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.myPost img {
+  width: 250px;
+  border-radius: 7px;
+  margin-bottom: 10px;
+}

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/styles.css">
+  <title>TEA-Project</title>
+</head>
+<body>
+  <header class="header">
+    <div>
+      <a class="header_logo" href="http://localhost:3000">МойЧай</a>
+    </div>
+
+    <div class="header-buttons">
+      <span class="welcome">Привет <i>{{this.name}}</i></span>
+      <a class="home_btn" href="http://localhost:3000">ГЛАВНАЯ</a>
+      {{#if userId}}
+        <a class="logout_btn" href="http://localhost:3000/user/logout">ВЫЙТИ</a>
+        {{else}}
+        <a class="signup_btn" href="http://localhost:3000/user/signup">РЕГИСТРАЦИЯ</a>
+        <a class="signin_btn" href="http://localhost:3000/user/signin">АВТОРИЗАЦИЯ</a>
+      {{/if}}
+    </div>
+  </header>
+
+  {{{body}}}
+
+  <script src="/index.js"></script>
+</body>
+</html>
