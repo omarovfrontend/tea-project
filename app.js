@@ -11,6 +11,7 @@ const app = express();
 const PORT = process.env.PORT ?? 3000;
 
 // import routers
+const teasRouter = require('./routes/teasRouter');
 const mainRouter = require('./routes/mainRouter');
 const postsRouter = require('./routes/postsRouter');
 const regRouter = require('./routes/regRouter');
@@ -39,8 +40,9 @@ app.use((req, res, next) => {
 }); // создает локальную переменную, которая сущ-ет если польз-ль залогинин
 
 // on routers
-app.use('/', mainRouter);
-app.use('/post', authMiddleware, postsRouter);
+app.use('/', teasRouter);
+app.use('/create', authMiddleware, postsRouter);
+// app.use('/post', authMiddleware, postsRouter);
 app.use('/user', regRouter);
 
 app.listen(PORT, () => {

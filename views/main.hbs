@@ -3,7 +3,7 @@
 {{#if userId}}
 <div class="wrapper_form">
 
-  <form name="addPost" class="addPost" action="/add" method="post">
+  <form name="addPost" class="addPost" action="/create/add" method="post">
     <div class="addPost_card">
       <label for="name" class="form-label">Добавить Чай:</label>
 	    <input class="input" required="required" type="text" name="postName" placeholder="название" />
@@ -49,7 +49,3 @@
 
 </div>
 {{/if}}
-
-<div class="container">
-  <div id="myMap" class="map"></div>
-</div>

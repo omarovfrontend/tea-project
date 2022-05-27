@@ -1,8 +1,121 @@
-// Добавление поста
+// START MAP
+(() => {
+  const placemarks = [
+    {
+      coordinates: [23.5974172, 119.8962412],
+      hintContent: '<div class="map__hint">Teguanin</div>',
+      balloonContent: [
+        '<div class="map__balloon">',
+        '<span>',
+        'Some info about tea',
+        '</span>',
+        '</br>',
+        '<a href="#">подробнее..',
+        '<a/>',
+        '</div>',
+      ],
+    },
+    {
+      coordinates: [55.764094, 37.617617],
+      hintContent: '<div class="map__hint">Matcha</div>',
+      balloonContent: [
+        '<div class="map__balloon">',
+        '<span>',
+        'Some info about tea',
+        '</span>',
+        '</br>',
+        '<a href="#">подробнее..',
+        '<a/>',
+        '</div>',
+      ],
+    },
+  ];
+
+  async function getCoords(geocode, el) {
+    const firstGeoObject = await geocode.geoObjects.get(0);
+    const coords = await firstGeoObject.geometry.getCoordinates();
+    // ВСТАВИТЬ ПОЛЯ ИЗ РЕСПОНСА FETCH
+    placemarks.push({
+      coordinates: [coords[0], coords[1]],
+      hintContent: `<div class="map__hint">${el.title}</div>`,
+      balloonContent: [
+        `<div class="map__balloon">
+        <span>
+        ${el.description}
+        </span>
+        </br>
+        <a href="/create/${el.id}">подробнее..
+        <a/>
+        </div>`,
+      ],
+    });
+  }
+
+  async function init() {
+    // Создание карты.
+    const res = await fetch('/get-tea', {
+      method: 'get',
+    });
+    if (res.ok) {
+      const data = await res.json();
+      // console.log(data);
+      // Подается слово для поиска координат
+
+      data.forEach(async (el) => {
+        // console.log(el);
+        const newCoords = await ymaps.geocode(el.location, {
+          results: 1,
+        });
+        // console.log(newCoords);
+        // Функция которая возвращает координиты по слову и записывает обьект для создания МЕТКИ
+        // Вызов
+        await getCoords(newCoords, el);
+      });
+    } else {
+      console.log('sosi biby');
+    }
+    setTimeout(() => {
+      placemarks.map(async (el) => {
+        await myMap.geoObjects.add(
+          new ymaps.Placemark(
+            el.coordinates,
+            {
+              hintContent: el.hintContent,
+              balloonContent: [el.balloonContent],
+            },
+            {
+              iconLayout: 'default#image',
+              iconImageHref: '/images/leaf.png',
+            },
+          ),
+        );
+      });
+    }, 1000);
+
+    console.log(placemarks.length);
+    console.log(placemarks);
+
+    const myMap = new ymaps.Map('myMap', {
+      center: [45.366377, 2.397632],
+      zoom: 2,
+    });
+
+    myMap.controls.remove('geolocationControl');
+    myMap.controls.remove('searchControl');
+    myMap.controls.remove('trafficControl');
+    myMap.controls.remove('typeSelector');
+    myMap.controls.remove('fullscreenControl');
+    myMap.controls.remove('rulerControl');
+    console.log(placemarks);
+  }
+  ymaps.ready(init);
+})();
+// END MAP
+
 console.log('adidas');
+// Добавление поста
 const { addPost } = document.forms;
 const myPosts = document.querySelector('.myPosts');
-const inp = document.querySelector('.location');
 
 function insertPost(post) {
   return `
@@ -20,58 +133,11 @@ function insertPost(post) {
 
 addPost.addEventListener('submit', async (event) => {
   event.preventDefault();
-  const x = inp.value;
-
-  // START MAP
-  ymaps.ready(() => {
-    init(x);
-  });
-  const mp = document.getElementsByClassName('ymaps-2-1-79-map');
-  if (mp.length > 1) mp[0].remove();
-
-  const placemarks = [
-    // {
-    //   coordinates: [23.5974172, 119.8962412],
-    // },
-  ];
-
-  // Получение координат
-  function getCoords(res) {
-    const firstGeoObject = res.geoObjects.get(0);
-    const coords = firstGeoObject.geometry.getCoordinates();
-    placemarks.push(({ coordinates: [coords[0], coords[1]] }));
-  }
-
-  async function init(txt) {
-    // Создание карты
-    const myMap = new ymaps.Map('myMap', {
-      center: [45.366377, 2.397632],
-      zoom: 2,
-    });
-    myMap.controls.remove('geolocationControl');
-    myMap.controls.remove('searchControl');
-    myMap.controls.remove('trafficControl');
-    myMap.controls.remove('typeSelector');
-    myMap.controls.remove('fullscreenControl');
-    myMap.controls.remove('rulerControl');
-
-    const newCoords = await ymaps.geocode(txt, {
-      results: 1,
-    });
-
-    await getCoords(newCoords);
-
-    for (let i = 0; i < placemarks.length; i += 1) {
-      myMap.geoObjects.add(new ymaps.Placemark(placemarks[i].coordinates));
-    }
-  }
-  // END MAP
-
   const {
     postName, location, img, description,
   } = addPost;
 
-  const response = await fetch('/post/add', {
+  const response = await fetch('/create/add', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -81,7 +147,6 @@ addPost.addEventListener('submit', async (event) => {
       location: location.value,
       img: img.value,
       description: description.value,
-      // coordinates: getCoords(location.value)
     }),
   });
 
@@ -101,7 +166,7 @@ addPost.addEventListener('submit', async (event) => {
 myPosts.addEventListener('click', async (event) => {
   event.preventDefault();
   if (event.target.className === 'myPosts_delete-btn') {
-    const response = await fetch(`/post/delete/${event.target.id}`, {
+    const response = await fetch(`/create/delete/${event.target.id}`, {
       method: 'delete',
     });
     if (response.ok) {
