@@ -1,0 +1,51 @@
+{{!-- form method="post" => значит в mainRouter пишем router.post --}}
+{{!-- добавление поста --}}
+{{#if userId}}
+<div class="wrapper_form">
+
+  <form name="addPost" class="addPost" action="/create/add" method="post">
+    <div class="addPost_card">
+      <label for="name" class="form-label">Добавить Чай:</label>
+	    <input class="input" required="required" type="text" name="postName" placeholder="название" />
+    </div>
+
+    <div class="addPost_card">
+      <label for="name" class="form-label">Местоположение чая:</label>
+	    <input class="input location" required="required" type="text" name="location" placeholder="местоположение" />
+    </div>
+
+	  <div class="addPost_card">
+      <label for="name" class="form-label">Ссылка на картинку:</label>
+	    <input class="input" required type="text" name="img" placeholder="вставьте ссылку" />
+    </div>
+
+    <div class="addPost_card">
+      <label for="name" class="form-label">Описание чая:</label>
+	    <input class="input" required="required" type="text" name="description" placeholder="описание" />
+    </div>
+
+    <button class="addPost_button" type="submit">Добавить</button>
+  </form>
+  
+
+{{!-- удаление поста --}}
+  <div class="myPosts">
+    {{#each posts}}
+      <div class="myPost">
+        <p>{{this.title}}</p>
+        <p>{{this.location}}</p>
+        <img src={{this.img}} alt="photo">
+        <p>{{this.description}}</p>
+        {{#if owner}}
+          <div data-dataId="{{this.id}}" class="myPost-inner">
+            <button data-type="delete" id={{this.id}} class="myPosts_delete-btn">Удалить</button>
+          </div>
+        {{else}}
+
+        {{/if}}
+      </div>
+    {{/each}}
+  </div>
+
+</div>
+{{/if}}
